@@ -8,15 +8,26 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { defaultStyles } from "@/constants/Styles";
-import { Link } from "expo-router";
 import clsx from "clsx";
+import CenterTextDivider from "@/components/CenterTextDivider";
+import { Ionicons } from "@expo/vector-icons";
 
-const Signup = () => {
+enum SignInType {
+  Phone,
+  Email,
+  Google,
+  Apple,
+}
+
+const Signin = () => {
   const [contryCode, setContryCode] = useState("+49");
   const [phoneNumber, setPhoneNumber] = useState("");
   const keyboardVerticalOffset = Platform.OS === "ios" ? 80 : 0;
 
-  const onSignup = async () => {};
+  const onSignIn = async (type: SignInType) => {
+    if (type === SignInType.Phone) {
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -25,9 +36,9 @@ const Signup = () => {
       keyboardVerticalOffset={keyboardVerticalOffset}
     >
       <View style={defaultStyles.container}>
-        <Text style={defaultStyles.header}>Let's get started!</Text>
+        <Text style={defaultStyles.header}>Welcom back!</Text>
         <Text style={defaultStyles.descriptionText}>
-          Enter your phone number. We will send you a confirmation code there
+          Enter your phone number associated with your account
         </Text>
         {/* Input container */}
         <View className="my-10 flex-row">
@@ -45,31 +56,61 @@ const Signup = () => {
             onChangeText={(value) => setPhoneNumber(value)}
           />
         </View>
-        {/* Link */}
-        <Link href={"/login"} asChild replace>
-          <TouchableOpacity>
-            <Text style={defaultStyles.textLink}>
-              Already have an account? Log in.
-            </Text>
-          </TouchableOpacity>
-        </Link>
-
-        <View className="flex-1"></View>
-
         {/* Submit btn */}
         <TouchableOpacity
           className={clsx(
-            "mt-5 bg-gray-300",
+            "mt-0 bg-gray-300",
             phoneNumber !== "" && `bg-slate-800`
           )}
           style={[defaultStyles.pillButton]}
-          onPress={onSignup}
+          onPress={() => onSignIn(SignInType.Phone)}
         >
-          <Text style={defaultStyles.buttonText}>Sign up</Text>
+          <Text style={defaultStyles.buttonText}>Sign in</Text>
+        </TouchableOpacity>
+        <CenterTextDivider textStyle="text-gray-500 text-xl" text="or" />
+
+        <TouchableOpacity
+          className="bg-white flex-row mt-5 shadow-sm"
+          style={defaultStyles.pillButton}
+          onPress={() => onSignIn(SignInType.Email)}
+        >
+          <Ionicons name="mail" size={24} color={"#000"} />
+          <Text
+            className="text-black font-medium text-lg ml-4"
+            // style={[defaultStyles.buttonText]}
+          >
+            Continue with email
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="bg-white flex-row mt-5 shadow-sm"
+          style={defaultStyles.pillButton}
+          onPress={() => onSignIn(SignInType.Email)}
+        >
+          <Ionicons name="logo-google" size={24} color={"#000"} />
+          <Text
+            className="text-black font-medium text-lg ml-4"
+            // style={[defaultStyles.buttonText]}
+          >
+            Continue with Google
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="bg-white flex-row mt-5 shadow-sm"
+          style={defaultStyles.pillButton}
+          onPress={() => onSignIn(SignInType.Email)}
+        >
+          <Ionicons name="logo-apple" size={24} color={"#000"} />
+          <Text
+            className="text-black font-medium text-lg ml-4"
+            // style={[defaultStyles.buttonText]}
+          >
+            Continue with Apple
+          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
 };
 
-export default Signup;
+export default Signin;
