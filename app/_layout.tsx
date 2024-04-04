@@ -1,8 +1,14 @@
+import Colors from "@/constants/Colors";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Link, Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
+import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
+import HeaderLeft from "@/components/HeaderLeft";
+import { TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -36,10 +42,59 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+const options: NativeStackNavigationOptions = {
+  title: "",
+  headerShadowVisible: false,
+  headerStyle: {
+    backgroundColor: Colors.background,
+  },
+};
+
 function RootLayoutNav() {
+  const router = useRouter();
+  const headerLeftHandler = () => {
+    router.back();
+  };
+
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <StatusBar style="light" />
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="signup"
+          options={{
+            ...options,
+            headerLeft: () => (
+              <HeaderLeft headerLeftHandler={headerLeftHandler} />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="login"
+          options={{
+            ...options,
+            headerLeft: () => (
+              <HeaderLeft headerLeftHandler={headerLeftHandler} />
+            ),
+            headerRight: () => (
+              <Link href={"/help"} asChild>
+                <TouchableOpacity>
+                  <Ionicons
+                    name="help-circle-outline"
+                    size={28}
+                    color={Colors.dark}
+                  />
+                </TouchableOpacity>
+              </Link>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="help"
+          options={{ title: "help", presentation: "modal" }}
+        />
+      </Stack>
+    </>
   );
 }
