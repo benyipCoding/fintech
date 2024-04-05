@@ -8,13 +8,16 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { defaultStyles } from "@/constants/Styles";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import clsx from "clsx";
+import { useSignUp } from "@clerk/clerk-expo";
 
 const Signup = () => {
-  const [contryCode, setContryCode] = useState("+49");
+  const [countryCode, setCountryCode] = useState("+49");
   const [phoneNumber, setPhoneNumber] = useState("");
   const keyboardVerticalOffset = Platform.OS === "ios" ? 80 : 0;
+  const router = useRouter();
+  const { signUp } = useSignUp();
 
   const onSignup = async () => {};
 
@@ -33,9 +36,10 @@ const Signup = () => {
         <View className="my-10 flex-row">
           <TextInput
             className="bg-gray-200 p-5 rounded-2xl text-xl mr-3 leading-6"
-            placeholder="Contry code"
-            keyboardType="numeric"
-            value={contryCode}
+            placeholder="Country code"
+            keyboardType="phone-pad"
+            value={countryCode}
+            onChangeText={(value) => setCountryCode(value)}
           />
           <TextInput
             className="flex-1 bg-gray-200 p-5 rounded-2xl text-xl leading-6"
